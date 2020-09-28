@@ -8,25 +8,20 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-
-
 namespace empty_bot
 {
+    using System.IO;
     public static class Program
     {
         private static readonly Random rand = new Random(DateTime.Now.Millisecond);
         private static readonly string[] actions = { "move", "eat", "load", "unload" };
         private static readonly string[] directions = { "up", "down", "right", "left" };
-        
         private static readonly JsonSerializer serializer = new JsonSerializer() {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
-
-
         public static async Task Main(string[] args)
         {
             await WebHost.CreateDefaultBuilder(args)
@@ -34,9 +29,9 @@ namespace empty_bot
                    .Configure(app => 
                        app.Run(async context =>
                        {
-                           ReadResult result = await context.Request.BodyReader.ReadAsync();
-                           JObject request = JObject.Parse(Encoding.Default.GetString(result.Buffer.ToArray()));
-
+                           var reader = new StreamReader(context.Request.BodyReader.AsStream(), Encoding.Default);
+                           var inputStr = reader.ReadToEnd();
+                           JObject request = JObject.Parse(inputStr);
                            var orders = new List<Order>();
                            foreach(JToken ant in request["ants"])
                            {
@@ -46,7 +41,6 @@ namespace empty_bot
                                    Dir = directions[rand.Next(directions.Length)]
                                });
                            }
-
                            await context.Response.WriteAsync(
                                JObject.FromObject(new { Orders = orders.ToArray() }, serializer).ToString());
                        })
@@ -54,14 +48,10 @@ namespace empty_bot
                    .Build()
                    .RunAsync();
         }
-
-
         private class Order
         {
             public int AntId { get; set; }
-
             public string Act { get; set; }
-
             public string Dir { get; set; }
         }
     }
