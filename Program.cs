@@ -3,12 +3,11 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.IO.Pipelines;
 using System.Text;
-
+using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,12 +27,12 @@ namespace empty_bot
         };
 
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            WebHost.CreateDefaultBuilder(args)
-                   .UseUrls("http://localhost:7070")
+            await WebHost.CreateDefaultBuilder(args)
+                   .UseUrls("http://*:7070")
                    .Configure(app => 
-                       app.Run(async (context) =>
+                       app.Run(async context =>
                        {
                            ReadResult result = await context.Request.BodyReader.ReadAsync();
                            JObject request = JObject.Parse(Encoding.Default.GetString(result.Buffer.ToArray()));
@@ -53,7 +52,7 @@ namespace empty_bot
                        })
                    )
                    .Build()
-                   .Run();
+                   .RunAsync();
         }
 
 
