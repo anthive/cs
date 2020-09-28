@@ -30,7 +30,7 @@ namespace empty_bot
         public static async Task Main(string[] args)
         {
             await WebHost.CreateDefaultBuilder(args)
-                   .UseUrls("http://localhost:7070")
+                   .UseUrls("http://*:7070")
                    .Configure(app => 
                        app.Run(async context =>
                        {
