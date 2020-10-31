@@ -17,7 +17,7 @@ namespace empty_bot
     public static class Program
     {
         private static readonly Random rand = new Random(DateTime.Now.Millisecond);
-        private static readonly string[] actions = { "move", "eat", "load", "unload" };
+        private static readonly string[] actions = { "move", "eat", "take", "put" };
         private static readonly string[] directions = { "up", "down", "right", "left" };
         private static readonly JsonSerializer serializer = new JsonSerializer() {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
