@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>WebApplication</RootNamespace>
+  </PropertyGroup>
+
+</Project>
