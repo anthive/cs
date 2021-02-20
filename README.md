@@ -17,7 +17,7 @@
 
 ### Run locally (not required)
 ```
-csc Program.cs
+dotnet run Bot.cs
 ```
 It will start localhost server on port :7070 **Do not change port**
 
